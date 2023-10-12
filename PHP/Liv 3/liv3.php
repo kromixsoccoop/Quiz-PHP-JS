@@ -21,32 +21,24 @@ $html = <<<EOF
     </html>
 EOF;
 
+$doc = new DOMDocument();
+$doc->loadHTML($html);
 
-$doc = new DOMDocument();   //creo un documento xml vuoto
-$doc->loadHTML($html);  //carico la stringa html nell'oggetto creato prima per analizzarla
+$dati = [];
 
+$righe = $doc->getElementsByTagName('tr');
+if ($righe->length >= 2) {
+    $intestazioni = $righe->item(0)->getElementsByTagName('td');
+    $valori = $righe->item(1)->getElementsByTagName('td');
 
-$dati = []; //creo un array vuoto per salvare i dati
+    if ($intestazioni->length === $valori->length) {
+        for ($i = 0; $i < $intestazioni->length; $i++) {
+            $intestazione = trim($intestazioni->item($i)->textContent);
+            $valore = trim($valori->item($i)->textContent);
 
-
-$righe = $doc->getElementsByTagName('tr');  //selezione tutte le righe attraverso il tag tr e li salvo nella variabile righe. Conterrà i dati che voglio prendere
-
-
-if ($righe->length >= 2) {  //controllo se è andata a buon fine l'operazione precedente
-    $nome = trim($righe->item(1)->getElementsByTagName('td')->item(0)->textContent);    //qui salverà 'Mario'
-    $cognome = trim($righe->item(1)->getElementsByTagName('td')->item(1)->textContent); //qui salverà 'Rossi'
-
-    //aggiungo i dati all'array associativo
-    $dati['Nome'] = $nome;
-    $dati['Cognome'] = $cognome;
+            $dati[$intestazione] = $valore;
+        }
+    }
 }
 
-
-print_r($dati); // stampo l'array
-
-/*con $righe->item(1) estraggola seconda riga
-con getElementsByTagName('td') accedo ai suoi nodi figli cioè td, la cella della tabella
-con item(0) estraggo l'elemento contenuto nella cella td con indice 0 della seconda riga
-con textContent ottengo il contenuto stringa di td
-con trim() elimino spazi vuoti all'inizio e alla fine di td
-/*
+print_r($dati);
