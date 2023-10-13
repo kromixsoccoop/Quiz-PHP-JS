@@ -41,20 +41,27 @@ $xml = <<<EOF
     </pazienti>
 EOF;
 
-class Paziente {
-    public $nome;
-    public $cognome;
-    public $eta;
-    public $alive;
-    public $figli = [];
+class Persona {
+    public string $nome;
+    public string $cognome;
+    public int $eta;
+    public bool $alive;
+
+    public function __construct(string $nome, string $cognome, int $eta, bool $alive) {
+        $this->nome = $nome;
+        $this->cognome = $cognome;
+        $this->eta = $eta;
+        $this->alive = $alive;
+    }
 }
 
-class Figlio {
-    public $nome;
-    public $cognome;
-    public $eta;
-    public $alive;
+class Paziente extends Persona {
+    public array $figli = [];
 }
+
+class Figlio extends Persona {
+}
+
 
 $doc = new DOMDocument();
 $doc->loadXML($xml);
@@ -64,19 +71,21 @@ $pazienti = [];
 $pazientiXML = $doc->getElementsByTagName('paziente');
 
 foreach ($pazientiXML as $pazienteXML) {
-    $paziente = new Paziente();
-    $paziente->nome = trim($pazienteXML->getElementsByTagName('nome')->item(0)->textContent);
-    $paziente->cognome = trim($pazienteXML->getElementsByTagName('cognome')->item(0)->textContent);
-    $paziente->eta = intval($pazienteXML->getElementsByTagName('eta')->item(0)->textContent);
-    $paziente->alive = filter_var($pazienteXML->getElementsByTagName('alive')->item(0)->textContent, FILTER_VALIDATE_BOOLEAN);
+    $nome = trim($pazienteXML->getElementsByTagName('nome')->item(0)->textContent);
+    $cognome = trim($pazienteXML->getElementsByTagName('cognome')->item(0)->textContent);
+    $eta = $pazienteXML->getElementsByTagName('eta')->item(0)->textContent;
+    $alive = filter_var($pazienteXML->getElementsByTagName('alive')->item(0)->textContent, FILTER_VALIDATE_BOOLEAN);
+
+    $paziente = new Paziente($nome, $cognome, $eta, $alive);
 
     $figliXML = $pazienteXML->getElementsByTagName('figlio');
     foreach ($figliXML as $figlioXML) {
-        $figlio = new Figlio();
-        $figlio->nome = trim($figlioXML->getElementsByTagName('nome')->item(0)->textContent);
-        $figlio->cognome = trim($figlioXML->getElementsByTagName('cognome')->item(0)->textContent);
-        $figlio->eta = intval($figlioXML->getElementsByTagName('eta')->item(0)->textContent);
-        $figlio->alive = filter_var($figlioXML->getElementsByTagName('alive')->item(0)->textContent, FILTER_VALIDATE_BOOLEAN);
+        $nomeFiglio = trim($figlioXML->getElementsByTagName('nome')->item(0)->textContent);
+        $cognomeFiglio = trim($figlioXML->getElementsByTagName('cognome')->item(0)->textContent);
+        $etaFiglio = $figlioXML->getElementsByTagName('eta')->item(0)->textContent;
+        $aliveFiglio = filter_var($figlioXML->getElementsByTagName('alive')->item(0)->textContent, FILTER_VALIDATE_BOOLEAN);
+
+        $figlio = new Figlio($nomeFiglio, $cognomeFiglio, $etaFiglio, $aliveFiglio);
         $paziente->figli[] = $figlio;
     }
 
@@ -86,3 +95,4 @@ foreach ($pazientiXML as $pazienteXML) {
 $json = json_encode($pazienti, JSON_PRETTY_PRINT);
 
 echo $json;
+?>
