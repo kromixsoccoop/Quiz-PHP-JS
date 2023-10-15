@@ -14,9 +14,24 @@ abstract class Player implements IPlayer
     }
 }
 
+class Youtube extends Player{
+    public static function play() {
+        echo "Playing...". get_called_class() .PHP_EOL;
+    }
+}
+class Spotify extends Player{
+    public static function play() {
+        echo "Playing...". get_called_class() .PHP_EOL;
+    }
+}
+
 /* Risultato:
 Playing...Youtube
 Playing...Spotify
 */
 
 // Codice:
+$yt = new Youtube();
+$yt ->play();
+$sp = new Spotify();
+$sp ->play();
