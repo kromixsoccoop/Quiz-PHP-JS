@@ -8,3 +8,6 @@ const lista = [5, 10, 8, 7, 2];
 */
 
 // Codice:
+const calcolaFattoriali = lista => lista.map(n => (n <= 1 ? 1 : Array.from({ length: n }, (_, i) => i + 1).reduce((a, b) => a * b)));
+
+console.log(calcolaFattoriali(lista));
