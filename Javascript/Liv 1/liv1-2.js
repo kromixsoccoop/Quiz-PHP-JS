@@ -7,3 +7,4 @@ const lista = [10, 80, 45, 35, 654, 45, 1, 24];
 
 // Codice:
 
+console.log(Math.max(...lista));

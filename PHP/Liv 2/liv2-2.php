@@ -17,3 +17,9 @@ Trav. 2 - Via Roma 10
 */
 
 // Codice:
+foreach ($persone as $persona) {
+    preg_match('/\s-\s(.*?),/', $persona, $matches);
+    if (isset($matches[1])) {
+        echo $matches[1] . "\n";
+    }
+}

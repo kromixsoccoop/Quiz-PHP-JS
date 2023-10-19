@@ -19,4 +19,11 @@ Array
 )
 */
 
-// Codice:
+$pattern = '/\b\d{10}\b/';
+$numeri = [];
+$persona = implode(", ", $persone);
+
+if (preg_match_all($pattern, $persona, $matches)) {
+    $numeri = array_merge($numeri, $matches[0]);
+}
+print_r($numeri);

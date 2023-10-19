@@ -14,9 +14,15 @@ abstract class Player implements IPlayer
     }
 }
 
+class Youtube extends Player{}
+
+class Spotify extends Player{}
+
 /* Risultato:
 Playing...Youtube
 Playing...Spotify
 */
 
 // Codice:
+Youtube::play();
+Spotify::play();

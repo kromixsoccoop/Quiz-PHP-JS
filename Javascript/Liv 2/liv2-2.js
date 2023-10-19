@@ -47,3 +47,5 @@ const lista = [
 */
 
 // Codice: 
+const maggiorenni = lista.filter(persona => persona.age >= 18);
+console.log(maggiorenni.sort((a, b) => a.age - b.age));
