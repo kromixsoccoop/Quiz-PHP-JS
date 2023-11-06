@@ -12,20 +12,16 @@ FINE
 */
 
 // Codice:
-function contoAllaRovescia(secondi) {
-    return new Promise((resolve) => {
-      let interval = setInterval(() => {
-        if (secondi >= 0) {
-          console.log(secondi);
-          secondi--;
-        } else {
-          clearInterval(interval);
-          console.log("FINE");
-          resolve();
-        }
-      }, 1000);
-    });
+function attesa(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function contoAllaRovescia(secondi) {
+  for (let i = secondi; i >= 0; i--) {
+    console.log(i);
+    await attesa(1000);
   }
-  
-  contoAllaRovescia(5)
-    .then();
+  console.log("FINE");
+}
+
+contoAllaRovescia(5);
